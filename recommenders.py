@@ -160,8 +160,10 @@ class ALSRecommendation(CollaborativeFilteringModels, BaseRecommender):
                  threshold=0.6,
                  random_state=42):
 
-        super(ALSRecommendation, self).__init__(data=data, warm_start=warm_start)
-
+        # super(ALSRecommendation, self).__init__(data=data, warm_start=warm_start)
+        CollaborativeFilteringModels.__init__(self, data, warm_start=warm_start)
+        
+        
         self.popular_items = PopularItemsRecommendation(warm_start).fit(data)
         self.threshold = threshold
         self.ctm_model = None
@@ -313,7 +315,7 @@ class PopularItemsRecommendation(BaseRecommender):
         self.warm_start = warm_start
         self.popularity = None
 
-    def recommend(self, user, N=5, **kwargs):
+    def recommend(self, N=5, **kwargs):
         return self.popularity.head(N)['item_id'].tolist()
 
     def fit(self, user_item_matrix: pd.DataFrame):
