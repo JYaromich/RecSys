@@ -4,6 +4,9 @@ Metrics
 """
 import numpy as np
 
+def calc_precision(df_data, top_k):
+    for col_name in df_data.columns[2:]:
+        yield col_name, df_data.apply(lambda row: precision_at_k(row[col_name], row['actual'], k=top_k), axis=1).mean()
 
 def hit_rate(recommended_list, bought_list):
     bought_list = np.array(bought_list)

@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import requests
 
 retail_data_convert = {
     'actual': lambda x: list(map(int, x[1:-1].strip().split())),
@@ -12,8 +13,18 @@ retail_data_convert = {
         map(int, re.sub(r"\s+", "", x[1:-1], flags=re.UNICODE).split(',')))
 }
 
-#wrapper for prefilter func
 
+def send_tg_message(text='Cell execution completed.'):
+    tg_api_token = '5043397400:AAExpKcTarTWA2nYlvB_rOyL7vMVe8e1DFw'
+    tg_chat_id = '1971178318'
+    
+    requests.post(
+        'https://api.telegram.org/' +
+        'bot{}/sendMessage'.format(tg_api_token), 
+        params=dict(chat_id=tg_chat_id, text=text)
+    )
+
+#wrapper for prefilter func
 class PrefilterItems:
     def __init__(self, items_data, take_n_popular, warm_start, main_data=None) -> None:
         self.main_data = main_data
